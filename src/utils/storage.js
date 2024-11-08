@@ -6,9 +6,18 @@
  * @returns {any} The parsed value from local storage, or null if the key does not exist.
  */
 export const getLocalStorage = (key) => {
-    const storedValue = localStorage.getItem(key);
-    return storedValue ? JSON.parse(storedValue) : [];
+  try {
+    const storedData = localStorage.getItem(key);
+    if (storedData) {
+      return JSON.parse(storedData);
+    }
+    return null;
+  } catch (error) {
+    console.error("Error parsing data from localStorage", error);
+    return null;
+  }
 };
+
 
 /**
  * Set a value in local storage.
@@ -16,9 +25,22 @@ export const getLocalStorage = (key) => {
  * @param {string} key The key to store under.
  * @param {any} value The value to store.
  */
-export const setLocalStorage = (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value))
-}   
+export const setLocalStorage = (key, data) => {
+  try {
+    // Ensure that the data is not undefined or a function
+    if (data === undefined || typeof data === 'function') {
+      console.error("Invalid data for localStorage: ", data);
+      return;
+    }
+
+    // Convert the data to JSON and store it in localStorage
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    // Handle errors such as quota exceeded or unavailable storage
+    console.error("Error saving to localStorage:", error);
+  }
+};
+
 
 /**
  * Remove an item from local storage.
@@ -37,11 +59,7 @@ export const removeLocalStorage = (key) => {
  * @param {string} key The key under which the array is stored.
  * @param {any} value The value to add to the array.
  */
-export const addLocalStorage = (key, value) => {
-    let arr = getLocalStorage(key) || []
-    arr.push(value)
-    setLocalStorage(key, arr)
-}
+
 
 /**
  * Check if an item exists in local storage.

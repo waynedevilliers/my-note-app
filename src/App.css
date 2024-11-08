@@ -5,8 +5,15 @@
 #root {
   margin: 0 auto;
   padding: 2rem;
+  background-color: #d6d3d1;
   
 }
+
+.custom-container {
+  max-width: 80%; /* Example: Set to 80% of the viewport width */
+  max-width: 1200px; /* Or use a fixed width if preferred */
+}
+
 
 .logo {
   height: 6em;
